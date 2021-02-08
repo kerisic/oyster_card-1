@@ -1,7 +1,7 @@
 require 'oystercard'
 
 describe Oystercard do
-  
+
   it 'should have a balance of 0' do
     expect(subject.balance).to eq 0
   end
@@ -18,6 +18,11 @@ describe Oystercard do
     maximum_amount = Oystercard.new.maximum_amount
     subject.top_up(maximum_amount)
     expect{subject.top_up(1)}.to raise_error "reached topup limit of #{maximum_amount}!"
+  end
+
+  it 'should deduct money by given amount' do
+    subject.top_up(20)
+    expect{subject.deduct(10)}.to change{subject.balance}.by(-10)
   end
 
 end
