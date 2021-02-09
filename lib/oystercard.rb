@@ -27,7 +27,7 @@ Minimum_fare = 1
   end
 
   def in_journey?
-    true if @entry_station != nil
+    !!@entry_station
   end
 end
 
