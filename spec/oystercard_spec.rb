@@ -22,7 +22,7 @@ describe Oystercard do
 
   it "should not allow user to touch_in if balance is less than the minimum required" do
     card = Oystercard.new
-    expect { card.touch_in }.to raise_error "You have less than #{Oystercard::Minimum_amount} on your card"
+    expect { card.touch_in("entry_station") }.to raise_error "You have less than #{Oystercard::Minimum_amount} on your card"
   end
 
   # it 'should deduct money by given amount' do
@@ -33,23 +33,31 @@ describe Oystercard do
   it "deducts minimum fare from @balance when the user touches out" do
     card = Oystercard.new
     card.top_up(10)
-    card.touch_in
+    card.touch_in("entry_station")
     expect{card.touch_out}.to change{card.balance}.by(-(Oystercard::Minimum_fare))
   end
 
   it 'can touch in' do
     card = Oystercard.new
     card.top_up(Oystercard::Minimum_amount)
-    card.touch_in
+    card.touch_in("entry_station")
     expect(card).to be_in_journey
   end
 
   it 'should not be in journey' do
     card = Oystercard.new
     card.top_up(Oystercard::Minimum_amount)
-    card.touch_in
+    card.touch_in("entry_station")
     card.touch_out
     expect(card).not_to be_in_journey
   end
+
+  it "remembers the entry station after the touch in" do
+    card = Oystercard.new
+    card.top_up(10)
+    card.touch_in("entry_station")
+    expect(card.entry_station).to eq entry_station
+  end
+
 
 end

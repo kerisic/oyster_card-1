@@ -16,7 +16,7 @@ Minimum_fare = 1
     @balance += amount
   end
 
-  def touch_in
+  def touch_in(entry_station)
     fail "You have less than #{Minimum_amount} on your card" if @balance < Minimum_amount
     @journey_status = true
   end
