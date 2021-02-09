@@ -55,9 +55,17 @@ describe Oystercard do
   it "remembers the entry station after the touch in" do
     card = Oystercard.new
     card.top_up(10)
-    card.touch_in("entry_station")
+    entry_station = double(:entry_station)
+    card.touch_in(entry_station)
     expect(card.entry_station).to eq entry_station
   end
 
+it "forgets the entry station on touch out" do
+  card = Oystercard.new
+  card.top_up(10)
+  entry_station = double(:entry_station)
+  card.touch_in(entry_station)
+  expect{card.touch_out}.to change{card.entry_station}.to nil
+end
 
 end
