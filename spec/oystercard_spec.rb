@@ -25,11 +25,16 @@ describe Oystercard do
     expect { card.touch_in }.to raise_error "You have less than #{Oystercard::Minimum_amount} on your card"
   end
 
+  # it 'should deduct money by given amount' do
+  #   subject.top_up(20)
+  #   expect{subject.deduct(10)}.to change{subject.balance}.by(-10)
+  # end
 
-
-  it 'should deduct money by given amount' do
-    subject.top_up(20)
-    expect{subject.deduct(10)}.to change{subject.balance}.by(-10)
+  it "deducts minimum fare from @balance when the user touches out" do
+    card = Oystercard.new
+    card.top_up(10)
+    card.touch_in
+    expect{card.touch_out}.to change{card.balance}.by(-(Oystercard::Minimum_fare))
   end
 
   it 'can touch in' do
