@@ -30,3 +30,5 @@ MAXIMUM_AMOUNT = 90
     @journey_status
   end
 end
+
+#hello there joanna
