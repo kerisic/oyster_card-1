@@ -8,7 +8,6 @@ Minimum_fare = 1
   def initialize(topup_limit = MAXIMUM_AMOUNT)
     @balance = 0
     @maximum_amount = topup_limit
-    @journey_status = false
     @entry_station = nil
   end
 
@@ -19,19 +18,16 @@ Minimum_fare = 1
 
   def touch_in(entry_station)
     fail "You have less than #{Minimum_amount} on your card" if @balance < Minimum_amount
-    @journey_status = true
-
     @entry_station = entry_station
   end
 
   def touch_out
     deduct(Minimum_fare)
-    @journey_status = false
     @entry_station = nil
   end
 
   def in_journey?
-    @journey_status
+    true if @entry_station != nil
   end
 end
 
