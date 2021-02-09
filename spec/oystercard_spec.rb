@@ -20,21 +20,31 @@ describe Oystercard do
     expect{subject.top_up(1)}.to raise_error "reached topup limit of #{maximum_amount}!"
   end
 
+  it "should not allow user to touch_in if balance is less than the minimum required" do
+    card = Oystercard.new
+    expect { card.touch_in }.to raise_error "You have less than #{Oystercard::Minimum_amount} on your card"
+  end
+
+
+
   it 'should deduct money by given amount' do
     subject.top_up(20)
     expect{subject.deduct(10)}.to change{subject.balance}.by(-10)
   end
 
   it 'can touch in' do
-    subject.touch_in
-    expect(subject).to be_in_journey
+    card = Oystercard.new
+    card.top_up(Oystercard::Minimum_amount)
+    card.touch_in
+    expect(card).to be_in_journey
   end
 
   it 'should not be in journey' do
-    subject.touch_in
-    subject.touch_out
-    expect(subject).not_to be_in_journey
+    card = Oystercard.new
+    card.top_up(Oystercard::Minimum_amount)
+    card.touch_in
+    card.touch_out
+    expect(card).not_to be_in_journey
   end
-
 
 end
