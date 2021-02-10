@@ -26,26 +26,15 @@ let(:exit_station) {double :exit_station}
     expect { subject.touch_in(entry_station) }.to raise_error "You have less than #{Oystercard::Minimum_amount} on your card"
   end
 
-  # it 'should deduct money by given amount' do
-  #   subject.top_up(20)
-  #   expect{subject.deduct(10)}.to change{subject.balance}.by(-10)
-  # end
-
   describe 'when touching in and touching out do' do
     before(:each) do
       subject.top_up(10)
       subject.touch_in(entry_station)
     end
 
-
   it "deducts minimum fare from @balance when the user touches out" do
     expect{subject.touch_out(exit_station)}.to change{subject.balance}.by(-(Oystercard::Minimum_fare))
   end
-
-  it 'can touch in' do
-    expect(subject).to be_in_journey
-  end
-
 
   it "remembers the entry station after the touch in" do
     expect(subject.entry_station).to eq entry_station
@@ -70,10 +59,6 @@ end
 
 it 'remembers a journey history' do
   expect(subject.journey_list).to eq [{entry_station: entry_station, exit_station: exit_station}]
-end
-
-it 'should not be in journey' do
-  expect(subject).not_to be_in_journey
 end
 
 end
