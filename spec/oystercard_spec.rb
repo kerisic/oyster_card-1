@@ -1,6 +1,8 @@
 require 'oystercard'
 
 describe Oystercard do
+let(:entry_station) {double :entry_station}
+let(:exit_station) {double :exit_station}
 
   it 'should have a balance of 0' do
     expect(subject.balance).to eq 0
@@ -21,8 +23,7 @@ describe Oystercard do
   end
 
   it "should not allow user to touch_in if balance is less than the minimum required" do
-    card = Oystercard.new
-    expect { card.touch_in("entry_station") }.to raise_error "You have less than #{Oystercard::Minimum_amount} on your card"
+    expect { subject.touch_in(entry_station) }.to raise_error "You have less than #{Oystercard::Minimum_amount} on your card"
   end
 
   # it 'should deduct money by given amount' do
@@ -30,42 +31,55 @@ describe Oystercard do
   #   expect{subject.deduct(10)}.to change{subject.balance}.by(-10)
   # end
 
+  describe 'when touching in and touching out do' do
+    before(:each) do
+      subject.top_up(10)
+      subject.touch_in(entry_station)
+    end
+
+
   it "deducts minimum fare from @balance when the user touches out" do
-    card = Oystercard.new
-    card.top_up(10)
-    card.touch_in("entry_station")
-    expect{card.touch_out}.to change{card.balance}.by(-(Oystercard::Minimum_fare))
+    expect{subject.touch_out(exit_station)}.to change{subject.balance}.by(-(Oystercard::Minimum_fare))
   end
 
   it 'can touch in' do
-    card = Oystercard.new
-    card.top_up(Oystercard::Minimum_amount)
-    card.touch_in("entry_station")
-    expect(card).to be_in_journey
+    expect(subject).to be_in_journey
   end
 
-  it 'should not be in journey' do
-    card = Oystercard.new
-    card.top_up(Oystercard::Minimum_amount)
-    card.touch_in("entry_station")
-    card.touch_out
-    expect(card).not_to be_in_journey
-  end
 
   it "remembers the entry station after the touch in" do
-    card = Oystercard.new
-    card.top_up(10)
-    entry_station = double(:entry_station)
-    card.touch_in(entry_station)
-    expect(card.entry_station).to eq entry_station
+    expect(subject.entry_station).to eq entry_station
   end
 
 it "forgets the entry station on touch out" do
-  card = Oystercard.new
-  card.top_up(10)
-  entry_station = double(:entry_station)
-  card.touch_in(entry_station)
-  expect{card.touch_out}.to change{card.entry_station}.to nil
+  expect{subject.touch_out(exit_station)}.to change{subject.entry_station}.to nil
+end
+
+end
+
+describe 'remember journey information' do
+  before(:each) do
+    subject.top_up(10)
+    subject.touch_in(entry_station)
+    subject.touch_out(exit_station)
+end
+
+it 'remembers the exit station after touch out' do
+  expect(subject.exit_station).to eq exit_station
+end
+
+it 'remembers a journey history' do
+  expect(subject.journey_list).to eq [{entry_station: entry_station, exit_station: exit_station}]
+end
+
+it 'should not be in journey' do
+  expect(subject).not_to be_in_journey
+end
+
+end
+
+it 'should start empty' do
+  expect(subject.journey_list).to be_empty
 end
 
 end
