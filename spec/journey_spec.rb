@@ -1,10 +1,11 @@
 require 'journey'
 
 describe Journey do
-  let(:subject) { subject = Journey.new('station') }
+  let(:station) { double :station }
+  let(:subject) { subject = Journey.new(station) }
 
   it 'consists of an entry station when starting a journey' do
-    expect(subject.entry_station).to eq 'station'
+    expect(subject.entry_station).to eq station
   end
 
   it 'returns whether if the journey is complete' do
@@ -16,12 +17,13 @@ describe Journey do
   end
 
   describe 'when ending a journey' do
+    let(:station2) { double :station2 }
     before(:each) do
-      subject.end('nowhere')
+      subject.end(station2)
     end
 
     it 'when ending a journey, save the exit station information' do
-      expect(subject.exit_station).to eq('nowhere')
+      expect(subject.exit_station).to eq(station2)
     end
 
     it 'when ending a journey, journey becomes complete' do
