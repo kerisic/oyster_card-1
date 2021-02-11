@@ -21,13 +21,13 @@ describe Journey do
   end
 
   describe 'when starting a journey' do
-    subject {described_class.new(station)}
+    subject { described_class.new(station) }
 
     it 'has an entry station' do
       expect(subject.entry_station).to eq station
     end
 
-    it "returns a penalty fare if there is no exit station in journey" do
+    it 'returns a penalty fare if there is no exit station in journey' do
       expect(subject.fare).to eq Journey::PENALTY
     end
   end

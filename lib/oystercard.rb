@@ -1,4 +1,4 @@
-require_relative 'journey'
+require_relative 'journeylog'
 
 class Oystercard
   attr_reader :balance, :maximum_amount, :entry_station, :exit_station, :journey_list
@@ -24,7 +24,6 @@ class Oystercard
     raise "You have less than #{Minimum_amount} on your card" if @balance < Minimum_amount
 
     @journey = Journey.new(entry_station)
-
   end
 
   def touch_out(exit_station)
