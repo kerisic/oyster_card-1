@@ -1,7 +1,7 @@
 require 'journey'
 
 describe Journey do
-  let(:station) { double :station }
+  let(:station) { double :station, zone: 1 }
   let(:subject) { subject = Journey.new(station) }
 
   it 'consists of an entry station when starting a journey' do
@@ -12,8 +12,24 @@ describe Journey do
     expect(subject.complete?).to eq false
   end
 
-  it 'calculates the penalty fare if journey is not complete' do
+  it 'returns itself when exiting a journey' do
+    expect(subject.end(station)).to eq(subject)
+  end
+
+  it 'has a penalty far by default' do
     expect(subject.fare).to eq(6)
+  end
+
+  describe 'when starting a journey' do
+    subject {described_class.new(station)}
+
+    it 'has an entry station' do
+      expect(subject.entry_station).to eq station
+    end
+
+    it "returns a penalty fare if there is no exit station in journey" do
+      expect(subject.fare).to eq Journey::PENALTY
+    end
   end
 
   describe 'when ending a journey' do
@@ -31,7 +47,7 @@ describe Journey do
     end
 
     it 'calculates the fare of a journey when journey is complete' do
-      expect(subject.fare).to eq(1)
+      expect(subject.fare).to eq Journey::MINFARE
     end
   end
 end
