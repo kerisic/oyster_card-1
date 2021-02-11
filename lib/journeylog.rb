@@ -18,6 +18,8 @@ class JourneyLog
   end
 
   def finish(exit_station)
+    currentjourney
+    @journeys << @current_journey if @current_journey.entry_station.nil?
     @current_journey.end(exit_station)
     @current_journey = nil
     @in_journey = false

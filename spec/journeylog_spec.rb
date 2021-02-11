@@ -14,24 +14,26 @@ describe JourneyLog do
     end
 
     it 'records a journey' do
-      subject.start(station)
       expect(subject.journeys).to include journey
+    end
+
+    it 'should be in journey' do
+      expect(subject).to be_in_journey
     end
   end
 
   describe '#finish' do
-    it 'should pass exit station to journey' do
+    before(:each) do
       subject.start(station)
       subject.finish(station)
+    end
+
+    it 'should pass exit station to journey' do
       expect(journey).to have_received(:end).with(station)
     end
-  end
 
-  describe '#journeys' do
-    it 'show the journey history' do
-      subject.start(station)
-      subject.finish(station)
-      expect(subject.journeys).to include(journey)
+    it 'should not be in journey' do
+      expect(subject).not_to be_in_journey
     end
   end
 end

@@ -2,7 +2,7 @@ require 'journey'
 
 describe Journey do
   let(:station) { double :station, zone: 1 }
-  let(:subject) { subject = Journey.new(station) }
+  let(:subject) { Journey.new(station) }
 
   it 'consists of an entry station when starting a journey' do
     expect(subject.entry_station).to eq station

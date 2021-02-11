@@ -44,10 +44,6 @@ describe Oystercard do
       subject.touch_in(entry_station)
       subject.touch_out(exit_station)
     end
-
-    it 'remembers a journey history' do
-      expect(subject.journey_list).to eq [{ entry_station: entry_station, exit_station: exit_station }]
-    end
   end
 
   it 'should start empty' do
