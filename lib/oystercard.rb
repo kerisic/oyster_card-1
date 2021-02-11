@@ -10,10 +10,8 @@ class Oystercard
   def initialize(topup_limit = MAXIMUM_AMOUNT)
     @balance = 0
     @maximum_amount = topup_limit
-    @entry_station = nil
-    @exit_station
     @journey_list = []
-    @journey = nil
+    @journey = Journey.new
   end
 
   def top_up(amount)
@@ -26,15 +24,13 @@ class Oystercard
     raise "You have less than #{Minimum_amount} on your card" if @balance < Minimum_amount
 
     @journey = Journey.new(entry_station)
-    @entry_station = entry_station
+
   end
 
   def touch_out(exit_station)
     @journey.end(exit_station)
-    @exit_station = exit_station
     deduct(@journey.fare)
-    @journey_list << { entry_station: @entry_station, exit_station: @exit_station }
-    @entry_station = nil
+    @journey_list << { entry_station: @journey.entry_station, exit_station: @journey.exit_station }
   end
 end
 
