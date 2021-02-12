@@ -45,9 +45,5 @@ describe Journey do
     it 'when ending a journey, journey becomes complete' do
       expect(subject).to be_complete
     end
-
-    it 'calculates the fare of a journey when journey is complete' do
-      expect(subject.fare).to eq Journey::MINFARE
-    end
   end
 end

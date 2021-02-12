@@ -20,7 +20,11 @@ class Journey
     self
   end
 
+  def zonefare
+    (@entry_station.zone - @exit_station.zone).abs if complete?
+  end
+
   def fare
-    complete? ? MINFARE : PENALTY
+    complete? ? MINFARE + zonefare : PENALTY
   end
 end
