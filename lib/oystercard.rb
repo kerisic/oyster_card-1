@@ -1,13 +1,13 @@
 require_relative 'journeylog'
 
 class Oystercard
-  attr_reader :balance, :maximum_amount, :entry_station, :exit_station, :journey_list
+  attr_reader :balance
 
   MAXAMOUNT = 90
   MINAMOUNT = 1
   MINFARE = 1
 
-  def initialize(journey_log = JourneyLog.new, _balance = 0)
+  def initialize(journey_log = JourneyLog.new)
     @balance = 0
     @journey_list = []
     @journey_log = journey_log

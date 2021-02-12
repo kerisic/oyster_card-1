@@ -27,7 +27,7 @@ describe Oystercard do
   end
 
   it 'should start empty' do
-    expect(subject.journey_list).to be_empty
+    expect(subject.journey_history).to be_empty
   end
 
   describe 'when touching-in and touching-out at stations' do
